@@ -1,0 +1,9 @@
+doctype html
+html
+  head
+    title GitHub User Info
+  body
+    h1 Welcome, #{userData.name}!
+    p Your GitHub username is: #{userData.login}
+    p Your profile URL is: 
+      a(href=userData.html_url)= userData.html_url
