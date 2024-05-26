@@ -37,7 +37,7 @@ router.get('/success', function(req, res) {
       Authorization: 'token ' + access_token
     }
   }).then((response) => {
-    res.render('views/success',{ userData: response.data });
+    res.render('success',{ userData: response.data });
   })
 });
 
