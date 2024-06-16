@@ -31,12 +31,14 @@ html
             th Name
             th Joined
             th Last visited 
+            th Counter
         tbody
           each user in users
             tr
               td= user.id
               td= user.name
               td= user.joined
-              td= user.lastvisited
+              td= user.lastvisit
+              td= user.counter
 
 
