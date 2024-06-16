@@ -39,36 +39,4 @@ html
               td= user.joined
               td= user.lastvisited
 
-    // Modals
-    if success
-      .modal.fade#successModal(tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true")
-        .modal-dialog(role="document")
-          .modal-content
-            .modal-header
-              h5.modal-title#successModalLabel Success
-              button.close(type="button" data-dismiss="modal" aria-label="Close")
-                span(aria-hidden="true") &times;
-            .modal-body
-              p Connection to the database was successful!
-            .modal-footer
-              button.btn.btn-secondary(type="button" data-dismiss="modal") Close
 
-    if error
-      .modal.fade#errorModal(tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true")
-        .modal-dialog(role="document")
-          .modal-content
-            .modal-header
-              h5.modal-title#errorModalLabel Error
-              button.close(type="button" data-dismiss="modal" aria-label="Close")
-                span(aria-hidden="true") &times;
-            .modal-body
-              p There was an error connecting to the database.
-            .modal-footer
-              button.btn.btn-secondary(type="button" data-dismiss="modal") Close
-
-    // JavaScript to trigger modals
-    script.
-      $(document).ready(function(){
-        $('#successModal').modal('show');
-        $('#errorModal').modal('show');
-      });
