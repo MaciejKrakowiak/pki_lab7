@@ -34,11 +34,11 @@ router.get('/', async (req, res) => {
                 const pictureUrl = result.data.picture;
 
                 const client = new Client({
-                    user: process.env.PGUSER,
-                    host: process.env.PGHOST,
-                    database: process.env.PGDATABASE,
-                    password: process.env.PGPASSWORD,
-                    port: process.env.PGPORT,
+                    user: 'pki_owner',
+                    host: 'ep-tight-mode-a25f82g4.eu-central-1.aws.neon.tech',
+                    database: 'pki',
+                    password: 'icZ0yGoJb4lV',
+                    port: '5432',
                     ssl: { rejectUnauthorized: false }
                 });
 
