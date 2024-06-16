@@ -2,6 +2,9 @@ const { google } = require('googleapis');
 const express = require('express')
 const OAuth2Data = require('./google_key.json');
 const router  = express.Router();
+const { Client } = require("pg")
+const dotenv = require("dotenv")
+dotenv.config()
 
 
 const CLIENT_ID = OAuth2Data.web.client_id;
@@ -31,8 +34,44 @@ router.get('/', (req, res) => {
             else{
               loggedUser = result.data.name
               console.log(loggedUser)
+               
+              const connectDb = async () => {
+                  try {
+                      const client = new Client({
+                          user: process.env.PGUSER,
+                          host: process.env.PGHOST,
+                          database: process.env.PGDATABASE,
+                          password: process.env.PGPASSWORD,
+                          port: process.env.PGPORT
+                      })
+               
+                      await client.connect()
+                      const r = await client.query('SELECT * FROM users where name=$1', loggedUser)
+                      if(r.rows.length==0)
+                        {
+                            const now = new Date();
+                            await client.query('INSERT INTO users (id, name, joined, lastvisit, counter) VALUES (null,$1,$2,$3,1)',loggedUser,now,now)
+                        }
+                      else if(r.rows.length>0)
+                      {
+                        await client.query('UPDATE users SET lastvisit=$1, counter = counter + 1 where id = $2 ',now,r.rows.at(0).id)
+                      }
+                      const r2 = await client.query('SELECT * FROM users')
+                    //   const result = await client.query('SELECT * FROM users')
+                    //   console.log(result)
+                    //   await client.end()
+                      
+                  } catch (error) {
+                      console.log(error)
+                  }
+                  connectDb()
+              }
+               
+              
             }
-            res.send('Logged in:'.concat(loggedUser,'<img.src="',result.data.picture,'"height="23" width="23">','<br>','<a href = /glogin/logout>logout</a>'))
+            // res.send('Logged in:'.concat(loggedUser,'<img.src="',result.data.picture,'"height="23" width="23">','<br>','<a href = /glogin/logout>logout</a>','<br>','<a href = />home</a>'))
+            res.render('user', { loggedUser, pictureUrl, users : r2.rows, success: true});
+            // res.render("google",{user : result.rows})
         })
     }
 })
