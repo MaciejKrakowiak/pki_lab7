@@ -34,12 +34,24 @@ router.get('/', async (req, res) => {
                 const pictureUrl = result.data.picture;
 
                 const client = new Client({
-                    user: 'pki_owner',
+                    // user: 'pki_owner',
+                    // host: 'ep-tight-mode-a25f82g4.eu-central-1.aws.neon.tech',
+                    // database: 'pki',
+                    // password: 'icZ0yGoJb4lV',
+                    // port: 5432,
+                    // connection: {
+                    //     options: `project=${ep-tight-mode-a25f82g4}`,
+                    //   },
+                    // ssl: { rejectUnauthorized: false }
                     host: 'ep-tight-mode-a25f82g4.eu-central-1.aws.neon.tech',
                     database: 'pki',
+                    username: 'pki_owner',
                     password: 'icZ0yGoJb4lV',
-                    port: '5432',
-                    ssl: { rejectUnauthorized: false }
+                    port: 5432,
+                    ssl: 'require',
+                    connection: {
+                      options: `project=ep-tight-mode-a25f82g4`,
+                    },
                 });
 
                 try {
