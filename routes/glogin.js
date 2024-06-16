@@ -70,7 +70,7 @@ router.get('/', async (req, res) => {
 
                     await client.end();
 
-                    connectDb()
+                    // connectDb()
 
                     res.render('google', { loggedUser, pictureUrl, users });
                 } catch (error) {
