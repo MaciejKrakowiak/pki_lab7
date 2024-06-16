@@ -50,13 +50,15 @@ router.get('/', async (req, res) => {
                     if (userQuery.rows.length === 0) {
                         await client.query('INSERT INTO users (name, joined, lastvisit, counter) VALUES ($1, $2, $3, 1)', [loggedUser, now, now]);
                     } else {
-                        await client.query('UPDATE users SET lastvisit = $1, counter = counter + 1 WHERE id = $2', [now, userQuery.rows[0].id]);
+                        await client.query('UPDATE users SET lastvisit = $1, counter = counter + 1 WHERE name = $2', [now, loggedUser]);
                     }
 
                     const r2 = await client.query('SELECT * FROM users');
                     const users = r2.rows;
 
                     await client.end();
+
+                    connectDb()
 
                     res.render('google', { loggedUser, pictureUrl, users });
                 } catch (error) {
