@@ -42,19 +42,20 @@ router.get('/', (req, res) => {
                           host: process.env.PGHOST,
                           database: process.env.PGDATABASE,
                           password: process.env.PGPASSWORD,
-                          port: process.env.PGPORT
+                          port: process.env.PGPORT,
+                          ssl: {rejectUnauthorized:false}
                       })
                
                       await client.connect()
-                      const r = await client.query('SELECT * FROM users where name=$1', loggedUser)
+                      const r = await client.query('SELECT * FROM users where name=$1', [loggedUser])
                       if(r.rows.length==0)
                         {
                             const now = new Date();
-                            await client.query('INSERT INTO users (id, name, joined, lastvisit, counter) VALUES (null,$1,$2,$3,1)',loggedUser,now,now)
+                            await client.query('INSERT INTO users (id, name, joined, lastvisit, counter) VALUES (null,$1,$2,$3,1)',[loggedUser,now,now])
                         }
                       else if(r.rows.length>0)
                       {
-                        await client.query('UPDATE users SET lastvisit=$1, counter = counter + 1 where id = $2 ',now,r.rows.at(0).id)
+                        await client.query('UPDATE users SET lastvisit=$1, counter = counter + 1 where id = $2 ',[now,r.rows.at(0).id])
                       }
                       const r2 = await client.query('SELECT * FROM users')
                     //   const result = await client.query('SELECT * FROM users')
